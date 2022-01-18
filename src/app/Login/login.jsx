@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Link}  from 'react-router-dom';
+import {Link, Redirect}  from 'react-router-dom';
 import './login.css';
 
 import firebase from '../Config/firebase';
 import 'firebase/auth';
+import {AuthContext} from '../Context/auth';
 
 
 function Login(){
@@ -11,13 +12,18 @@ function Login(){
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [sucesso, setSucesso] = useState('');
+    const {setLogado} = React.useContext(AuthContext);
 
     function LoginUsuario(){
       firebase.auth().signInWithEmailAndPassword(email, senha)
         .then(function(firebaseUser){
+          localStorage.setItem('logado', "S");
+          setLogado(true);
           setSucesso('S');
         })
         .catch(function(error){
+          localStorage.setItem('logado', "N");
+          setLogado(false);
           setSucesso('N');
         });
     }   
@@ -32,6 +38,7 @@ function Login(){
 
     return <div className="d-flex align-items-center text-center form-container">
       <form className="form-signin">
+        <img className="mb-4" src="../images/logo.png" alt="SiEstoque logo" />
         <h1 className="h3 mb-3 fw-normal">Login</h1>
 
         <div className="form-floating">
@@ -45,12 +52,12 @@ function Login(){
         </div>
         
         <button onClick={LoginUsuario} className="w-100 btn btn-lg btn-primary" type="button">Acessar</button>
-
+        
         {
           // sucesso === 1 ? 'faca isso' : 'faca aquilo'
-        sucesso === 'N' ? <div className="alert alert-danger mt-2" role="alert">E-mail ou senha inválida.</div> : null
-        }
-        {sucesso=== 'S' ? <div className="alert alert-success mt-2" role="alert"><Link to="/app/home"> Sucesso! clique para entrar</Link></div> : null}
+        sucesso === 'N' ? <div className="alert alert-danger mt-2" role="alert">E-mail ou senha inválida.</div> : null}
+        {sucesso === 'S' ? <Redirect to='/app/home' /> : null}
+
 
         <div className="login-links mt-5">
           <Link to="/app/resetsenha" className="mx-3">Esqueci minha senha</Link>

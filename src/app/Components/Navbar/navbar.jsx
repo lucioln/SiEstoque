@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Link} from 'react-router-dom';
+import { AuthContext } from '../../Context/auth';
 import './navbar.css';
 
 function Navbar(){
+
+    const {setLogado} = useContext(AuthContext);
+    function Logout(){
+        setLogado(false);
+        localStorage.removeItem("logado");
+    }
+
+
     return <nav className="navbar fixed-top navbar-expand-md navbar-dark">
 
     <div className="container-fluid">
             
-        <a className="navbar-brand" href="#">
-          <img src="/Images/logo.png" alt="" height="28" />
+        <a className="navbar navbar-icon-siestoque" href="/app/home">
+          <img src="/images/logo-light.png" alt="logo" height="28" />
         </a>
 
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +33,7 @@ function Navbar(){
             <Link to="/app/novoproduto" className="nav-link" aria-current="page" >Cadastrar Produto</Link>
             </li>
             <li className="nav-item">
-            <Link to="/app/login" className="nav-link" aria-current="page" >Sair</Link>
+            <a onClick={Logout} href='/app/login' className="nav-link logout" aria-current="page" >Sair</a>
             </li>
           </ul>
         </div>    
