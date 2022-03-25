@@ -1,0 +1,11 @@
+.navbar{
+    background-color: #0d6efd;
+}
+.navbar-icon-siestoque{
+    margin-left: 2px;
+    margin-right: 10px;
+}
+
+.navbar .logout{
+    cursor: pointer;
+}
